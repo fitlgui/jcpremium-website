@@ -1,0 +1,580 @@
+/* Scroll Suave Global com Easing Refinado */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+* {
+  scroll-margin-top: 80px;
+}
+
+/* Scrollbar Customizada - Elegante com Cor da Marca */
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: #f8fafc;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 100%);
+  border-left: 1px solid #e2e8f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #ab9159 0%, #8a7342 100%);
+  border-radius: 6px;
+  border: 2px solid #f8fafc;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #c4a566 0%, #ab9159 100%);
+  border: 2px solid #f1f5f9;
+  box-shadow: 0 0 8px rgba(171, 145, 89, 0.3);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #8a7342;
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ab9159 #f8fafc;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html, body {
+    scroll-behavior: auto;
+  }
+}
+
+/* Keyframes para Hero Section */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-blur {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Animação especial para texto hero - Mais elegante */
+@keyframes text-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.92);
+    filter: blur(15px);
+    letter-spacing: 0.25em;
+  }
+  60% {
+    letter-spacing: 0.05em;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+    letter-spacing: 0;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 2.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  
+  h1 {
+    animation: text-reveal 3s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  }
+  
+  p {
+    animation: fade-in 2.8s cubic-bezier(0.19, 1, 0.22, 1) 0.6s backwards;
+  }
+  
+  button {
+    animation: fade-in 3s cubic-bezier(0.19, 1, 0.22, 1) 1.2s backwards;
+  }
+}
+
+/* Animações Elegantes com variações - Timing mais sofisticado */
+.reveal-visible {
+  opacity: 1 !important;
+  transform: translateY(0) translateX(0) scale(1) !important;
+  filter: blur(0) !important;
+  transition: all 1.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Animações de entrada suaves e elegantes */
+.anim-fade-up {
+  opacity: 0;
+  transform: translateY(60px);
+  filter: blur(6px);
+  transition: opacity 1.8s cubic-bezier(0.19, 1, 0.22, 1),
+              transform 2s cubic-bezier(0.19, 1, 0.22, 1),
+              filter 1.6s cubic-bezier(0.19, 1, 0.22, 1);
+  
+  &.reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.anim-fade-in {
+  opacity: 0;
+  filter: blur(12px);
+  transform: scale(0.96);
+  transition: opacity 2s cubic-bezier(0.19, 1, 0.22, 1),
+              filter 2.2s cubic-bezier(0.19, 1, 0.22, 1),
+              transform 2s cubic-bezier(0.19, 1, 0.22, 1);
+  
+  &.reveal-visible {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+.anim-slide-left {
+  opacity: 0;
+  transform: translateX(-70px);
+  filter: blur(4px);
+  transition: all 1.8s cubic-bezier(0.19, 1, 0.22, 1);
+  
+  &.reveal-visible {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+.anim-slide-right {
+  opacity: 0;
+  transform: translateX(70px);
+  filter: blur(4px);
+  transition: all 1.8s cubic-bezier(0.19, 1, 0.22, 1);
+  
+  &.reveal-visible {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+.anim-scale {
+  opacity: 0;
+  transform: scale(0.8) translateY(30px);
+  filter: blur(5px);
+  transition: opacity 1.8s cubic-bezier(0.19, 1, 0.22, 1),
+              transform 2s cubic-bezier(0.19, 1, 0.22, 1),
+              filter 1.6s cubic-bezier(0.19, 1, 0.22, 1);
+  
+  &.reveal-visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Transições elegantes para botões com timing refinado e sofisticado */
+button {
+  transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  will-change: transform, box-shadow;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    transform: translate(-50%, -50%);
+    transition: width 1s cubic-bezier(0.19, 1, 0.22, 1), 
+                height 1s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  &:hover {
+    will-change: transform, box-shadow;
+    transform: translateY(-3px) scale(1.03);
+    
+    &::before {
+      width: 350px;
+      height: 350px;
+    }
+  }
+  
+  &:active {
+    transform: scale(0.97) translateY(-1px);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Hover effects para backgrounds */
+.hover\:bg-\[\#8a7342\]:hover {
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efeitos de hover elegantes */
+.group:hover {
+  transition-duration: 0.5s;
+}
+
+/* Animação suave para elementos com opacity */
+[class*="opacity-0"] {
+  will-change: opacity, transform;
+}
+
+/* Transição suave para cards */
+.bg-slate-50,
+.bg-white {
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efeito de elevação suave com sombras */
+.hover\:shadow-xl:hover,
+.hover\:shadow-lg:hover,
+.hover\:shadow-2xl:hover {
+  transition: box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover scale effects */
+.hover\:scale-105:hover,
+.hover\:scale-110:hover {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Bordas com hover refinado */
+.hover\:border-l-4:hover {
+  transition: border 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Translate effects para lift e descida */
+.hover\:-translate-y-1:hover,
+.hover\:translate-y-1:hover,
+.hover\:-translate-y-0\.5:hover {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Navegação suave com backdrop blur refinado */
+nav {
+  transition: all 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+  
+  &.bg-white\/95 {
+    backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  }
+  
+  /* Logo text gradient animado */
+  .text-\[\#ab9159\] {
+    background: linear-gradient(135deg, #ab9159 0%, #c4a566 30%, #d4b576 50%, #c4a566 70%, #ab9159 100%);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: background-position 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+    
+    &:hover {
+      background-position: right center;
+    }
+  }
+}
+
+/* Links com transição elegante */
+a {
+  transition: color 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  position: relative;
+}
+
+.hover\:text-\[\#ab9159\]:hover {
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Suavizar transições de translate e delays */
+.opacity-0 {
+  transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.translate-y-10 {
+  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Parallax suave */
+.parallax {
+  transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Cards com hover sofisticado e timing elegante */
+.group {
+  transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(171, 145, 89, 0.12), rgba(171, 145, 89, 0.03));
+    opacity: 0;
+    transition: opacity 1s cubic-bezier(0.19, 1, 0.22, 1);
+    pointer-events: none;
+  }
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+    
+    &::before {
+      opacity: 1;
+    }
+    
+    .group-hover\:text-\[\#ab9159\] {
+      transition: color 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+  }
+}
+
+/* Partner cards com reveal effect - Mais suave */
+.flex.items-center.justify-center {
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(171, 145, 89, 0.15), transparent);
+    transition: left 1s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  &:hover::after {
+    left: 100%;
+  }
+}
+
+/* Imagens com zoom suave e elegante */
+img {
+  transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1),
+              filter 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Animação de pulse sutil para elementos importantes - Mais elegante */
+@keyframes pulse-subtle {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.03);
+    opacity: 0.94;
+  }
+}
+
+.pulse-on-appear {
+  animation: pulse-subtle 3s cubic-bezier(0.19, 1, 0.22, 1) 1;
+}
+
+/* Efeito de shimmer para elementos de destaque */
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-effect {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+/* Animação de blob para background do hero - Mais suave */
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(30px, -60px) scale(1.15);
+  }
+  50% {
+    transform: translate(-30px, 30px) scale(0.88);
+  }
+  75% {
+    transform: translate(40px, 40px) scale(1.08);
+  }
+}
+
+.animate-blob {
+  animation: blob 18s infinite cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.animation-delay-2000 {
+  animation-delay: 3s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 6s;
+}
+
+/* Smooth shadows - Timing mais sofisticado */
+.hover\:shadow-xl:hover,
+.hover\:shadow-lg:hover,
+.hover\:shadow-md:hover,
+.hover\:shadow-2xl:hover {
+  transition: box-shadow 0.7s cubic-bezier(0.19, 1, 0.22, 1), 
+              transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Logo hover effect com glow sutil e elegante */
+.group-hover\:scale-105 {
+  transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+img[alt="JC Premium"] {
+  transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  filter: drop-shadow(0 0 0 transparent);
+}
+
+.group:hover img[alt="JC Premium"] {
+  filter: drop-shadow(0 6px 16px rgba(171, 145, 89, 0.35));
+  transform: scale(1.08) rotate(-3deg);
+}
+
+/* Efeito underline elegante para links da nav */
+nav a {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -6px;
+    left: 50%;
+    background: linear-gradient(90deg, transparent, #ab9159 20%, #c4a566 50%, #ab9159 80%, transparent);
+    transform: translateX(-50%);
+    transition: width 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+/* Efeito shimmer nos botões primários - Mais elegante */
+button.bg-\[\#ab9159\] {
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    transform: translate(-50%, -50%);
+    transition: width 1.2s cubic-bezier(0.19, 1, 0.22, 1), 
+                height 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  &:hover::after {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+/* Stats com animação de counter - Timing refinado */
+.text-4xl, .text-5xl {
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  display: inline-block;
+}
+
+/* Footer links com transição suave e elegante */
+footer a {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -3px;
+    left: 0;
+    background: linear-gradient(90deg, #ab9159, #c4a566);
+    transition: width 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  
+  &:hover::before {
+    width: 100%;
+  }
+}
+
+/* Social icons com efeito rotate elegante */
+a[href*="instagram"],
+a[href*="linkedin"] {
+  transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  
+  &:hover {
+    transform: rotate(360deg) scale(1.15);
+  }
+  
+  svg {
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+}
