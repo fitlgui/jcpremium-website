@@ -70,7 +70,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   diferenciais = [
     { title: 'Atendimento Personalizado', desc: 'Consultoria especializada para cada cliente' },
-    { title: 'Expertise SUSEP', desc: 'Regulamentação e compliance rigoroso' },
+    { title: 'Certificação SUSEP', desc: 'Habilitação profissional para atuar legalmente como corretora de seguros' },
     { title: 'Parcerias Premium', desc: 'Seguradoras e administradoras líderes' },
     { title: 'Visão de Longo Prazo', desc: 'Proteção que acompanha sua evolução' }
   ];
