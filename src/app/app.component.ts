@@ -1,215 +1,181 @@
-import { Component, HostListener, signal, AfterViewInit, ElementRef, ViewChildren, QueryList, OnInit } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
-
-interface ServiceItem {
-  title: string;
-  description: string;
-  subtitle: string;
-}
-
-interface Partner {
-  name: string;
-  logo: string;
-}
-
-interface Stat {
-  value: string;
-  label: string;
-}
-
+﻿import { Component, OnDestroy } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  animations: [
-    trigger('slideDown', [
-      transition(':enter', [
-        style({ height: '0', opacity: 0, transform: 'translateY(-10px)' }),
-        animate('500ms cubic-bezier(0.19, 1, 0.22, 1)', 
-                style({ height: '*', opacity: 1, transform: 'translateY(0)' }))
-      ]),
-      transition(':leave', [
-        animate('400ms cubic-bezier(0.19, 1, 0.22, 1)', 
-                style({ height: '0', opacity: 0, transform: 'translateY(-10px)' }))
-      ])
-    ])
-  ]
 })
-
-export class AppComponent implements OnInit, AfterViewInit {
-  isScrolled = signal(false);
-  mobileMenuOpen = signal(false);
+export class AppComponent implements OnDestroy {
   currentYear = new Date().getFullYear();
-
-  @ViewChildren('animItem') animItems!: QueryList<ElementRef>;
-
-  services: ServiceItem[] = [
+  isHomeRoute = true;
+  mobileMenuOpen = false;
+  selectedService = 0;
+  quizStep = 0;
+  goal = '';
+  moment = '';
+  goals = [
+    'Minha família e minha renda',
+    'Meu patrimônio',
+    'Minha empresa',
+    'Meus próximos planos',
+  ];
+  moments = [
+    'Quero começar a me proteger',
+    'Já tenho seguro e quero revisar',
+    'Quero conhecer as possibilidades',
+  ];
+  partners = [
+    'Porto Seguro',
+    'MAG Seguros',
+    'Tokio Marine',
+    'Unimed Seguros',
+    'HDI Seguros',
+    'Bradesco Seguros',
+    'Azul Seguros',
+    'Azos',
+  ];
+  offices = [
     {
-      title: 'Seguros',
-      subtitle: 'Proteção Completa e Estratégica',
-      description: 'Vida, residencial, empresarial, saúde e responsabilidade civil. Soluções personalizadas que garantem segurança e tranquilidade para sua família e patrimônio.'
+      city: 'Cuiabá',
+      state: 'MT',
+      address:
+        'Rua Arnaldo Lopes Sussekind, 51, Campos Office 2 — Jardim Aclimação, Cuiabá – MT, 78050-258',
+      phone: '',
+      phoneUrl: '',
     },
     {
-      title: 'Consórcios',
-      subtitle: 'Alavancagem Inteligente',
-      description: 'Cartas de crédito para automóveis e imóveis. Poder de compra à vista sem juros bancários, apenas planejamento estratégico e disciplina financeira.'
+      city: 'João Pessoa',
+      state: 'PB',
+      address:
+        'Rua Antônio Rabelo Júnior, 161 e 170, sala 405, 4º andar — Miramar, João Pessoa – PB, 58032-090',
+      phone: '(83) 3241-8741',
+      phoneUrl: 'tel:+558332418741',
     },
     {
-      title: 'Consultoria',
-      subtitle: 'Visão 360° do seu Patrimônio',
-      description: 'Análise profunda de riscos e oportunidades. Nossa expertise garante decisões assertivas e alinhadas aos seus objetivos de longo prazo.'
-    }
+      city: 'São Paulo',
+      state: 'SP',
+      address:
+        'Alameda Barão de Piracicaba, 618 — Campos Elíseos, São Paulo – SP, 01216-012',
+      phone: '',
+      phoneUrl: '',
+    },
   ];
-
-  stats: Stat[] = [
-    { value: '2017', label: 'Fundação' },
-    { value: '+10k', label: 'Vidas Protegidas' },
-    { value: '8', label: 'Anos de Mercado' },
-    { value: '100%', label: 'Dedicação' }
-  ];
-
-  diferenciais = [
-    { title: 'Atendimento Personalizado', desc: 'Consultoria especializada para cada cliente' },
-    { title: 'Certificação SUSEP', desc: 'Habilitação profissional para atuar legalmente como corretora de seguros' },
-    { title: 'Parcerias Premium', desc: 'Seguradoras e administradoras líderes' },
-    { title: 'Visão de Longo Prazo', desc: 'Proteção que acompanha sua evolução' }
-  ];
-
-  partners: Partner[] = [
-    { name: 'Porto Seguro', logo: '' },
-    { name: 'MAG Seguros', logo: '' },
-    { name: 'Tokio Marine', logo: '' },
-    { name: 'Unimed Seguros', logo: '' },
-    { name: 'HDI Seguros', logo: '' },
-    { name: 'Bradesco Seguros', logo: '' },
-    { name: 'Azul Seguros', logo: '' },
-    { name: 'Azos', logo: '' },
-  ];
-
-  isHomeRoute: boolean = false; // Simulação de rota para exemplo
-
-  ngOnInit() {
-    this.isHomeRoute = window.location.pathname === '/';
+  officeMapUrl(address: string): string {
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
   }
-
-  ngAfterViewInit() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const element = entry.target as HTMLElement;
-          
-          // Adiciona a classe reveal-visible
-          element.classList.add('reveal-visible');
-          
-          // Adiciona pulse sutil apenas na primeira vez
-          if (!element.classList.contains('pulsed')) {
-            element.classList.add('pulse-on-appear', 'pulsed');
-            setTimeout(() => {
-              element.classList.remove('pulse-on-appear');
-            }, 3000);
-          }
-          
-          // Para de observar após animar (performance)
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -80px 0px' // Ativa um pouco mais tarde para efeito mais dramático
-    });
-
-    this.animItems.forEach(item => {
-      observer.observe(item.nativeElement);
-    });
-    
-    // Parallax suave no scroll
-    this.setupParallax();
-  }
-
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    this.isScrolled.set(window.scrollY > 50);
-  }
-  
-  setupParallax() {
-    let ticking = false;
-    
-    const parallaxElements = document.querySelectorAll('.parallax');
-    
-    const updateParallax = () => {
-      const scrolled = window.pageYOffset;
-      
-      parallaxElements.forEach(element => {
-        const speed = parseFloat((element as HTMLElement).dataset['speed'] || '0.5');
-        const yPos = -(scrolled * speed);
-        (element as HTMLElement).style.transform = `translateY(${yPos}px)`;
-      });
-      
-      ticking = false;
-    };
-    
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateParallax);
-        ticking = true;
+  services = [
+    {
+      name: 'Vida & família',
+      number: '01',
+      title: 'Seu cuidado continua. Em cada fase da vida.',
+      description:
+        'Uma conversa sobre as pessoas que você ama, sua renda e o futuro que deseja construir.',
+      tags: ['Seguro de vida', 'Saúde', 'Proteção da renda'],
+      detail:
+        'Vamos entender sua rotina e avaliar coberturas que façam sentido para você, conforme as condições de cada produto.',
+    },
+    {
+      name: 'Patrimônio',
+      number: '02',
+      title: 'Tudo o que você construiu merece cuidado.',
+      description:
+        'Da sua casa ao seu automóvel, encontre caminhos para cuidar do patrimônio que faz parte da sua história.',
+      tags: ['Residencial', 'Automóvel', 'Responsabilidade civil'],
+      detail:
+        'A consultoria ajuda a comparar coberturas, franquias e assistências, com atenção ao seu uso e às condições da seguradora.',
+    },
+    {
+      name: 'Sua empresa',
+      number: '03',
+      title: 'Mais segurança para seguir empreendendo.',
+      description:
+        'Proteção para o negócio, para as pessoas e para os riscos que acompanham quem empreende.',
+      tags: ['Empresarial', 'Vida em grupo', 'Responsabilidade civil'],
+      detail:
+        'Conte sobre sua atividade para conversarmos sobre possibilidades de proteção para sua equipe e sua operação.',
+    },
+    {
+      name: 'Consórcios',
+      number: '04',
+      title: 'Seus próximos capítulos começam com um plano.',
+      description:
+        'Planejamento para conquistar um imóvel ou automóvel, com orientação para entender o funcionamento do consórcio.',
+      tags: ['Imóveis', 'Automóveis', 'Planejamento'],
+      detail:
+        'Consórcios têm taxa de administração e podem ter outros encargos. A contemplação segue as regras do grupo, por sorteio ou lance, sem garantia de data.',
+    },
+  ];
+  faqs = [
+    {
+      question: 'Por onde começo para escolher meu seguro?',
+      answer:
+        'Comece pelo que você quer proteger. No roteiro acima, escolha sua prioridade e leve suas respostas para uma conversa com a JC Premium. A equipe vai entender seu momento antes de apresentar opções.',
+    },
+    {
+      question: 'Já tenho seguro. Posso pedir uma revisão?',
+      answer:
+        'Sim. Você pode conversar com a equipe sobre sua apólice atual e mudanças na sua rotina, para avaliar se as coberturas continuam alinhadas às suas necessidades.',
+    },
+    {
+      question: 'O atendimento pode ser feito a distância?',
+      answer:
+        'Você pode iniciar o atendimento pelo WhatsApp de onde estiver e combinar com a equipe a melhor forma de continuar a conversa.',
+    },
+    {
+      question: 'O roteiro apresenta uma cotação?',
+      answer:
+        'O roteiro organiza seus interesses para o atendimento. Valores, coberturas, aceitação e condições dependem da análise e da proposta de cada seguradora ou administradora.',
+    },
+  ];
+  private routeSubscription: Subscription;
+  constructor(router: Router) {
+    this.routeSubscription = router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isHomeRoute = event.urlAfterRedirects.split(/[?#]/)[0] !== '/bio';
+        this.mobileMenuOpen = false;
       }
     });
   }
-
-  navClasses() {
-    return this.isScrolled()
-      ? 'bg-white/95 backdrop-blur-md shadow-sm border-slate-200'
-      : 'bg-transparent border-transparent';
+  get whatsappUrl(): string {
+    const message =
+      this.quizStep === 2
+        ? `Olá, Jacqueline! Vim pelo site da JC Premium. Quero conversar sobre: ${this.goal}. Meu momento: ${this.moment}. Podemos conversar?`
+        : 'Olá, Jacqueline! Vim pelo site da JC Premium e gostaria de um atendimento personalizado.';
+    return `https://wa.me/5565992985651?text=${encodeURIComponent(message)}`;
   }
-
-  scrollTo(elementId: string): void {
-    const element = document.getElementById(elementId);
-    if (element) {
-      const headerOffset = 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      const startPosition = window.pageYOffset;
-      const distance = offsetPosition - startPosition;
-      const duration = 1800; // Duração mais elegante e sofisticada
-      let start: number | null = null;
-
-      // Função de easing ultra suave - ease-in-out customizado premium
-      const easeInOutQuart = (t: number): number => {
-        return t < 0.5 
-          ? 8 * t * t * t * t 
-          : 1 - Math.pow(-2 * t + 2, 4) / 2;
-      };
-
-      const animation = (currentTime: number) => {
-        if (start === null) start = currentTime;
-        const timeElapsed = currentTime - start;
-        const progress = Math.min(timeElapsed / duration, 1);
-        const easing = easeInOutQuart(progress);
-        
-        window.scrollTo(0, startPosition + distance * easing);
-        
-        if (timeElapsed < duration) {
-          requestAnimationFrame(animation);
-        }
-      };
-
-      requestAnimationFrame(animation);
-    }
+  serviceUrl(): string {
+    return `https://wa.me/5565992985651?text=${encodeURIComponent('Olá, Jacqueline! Gostaria de conversar sobre ' + this.services[this.selectedService].name + '.')}`;
   }
-
-  toggleMobileMenu() {
-    this.mobileMenuOpen.update(v => !v);
+  chooseGoal(goal: string): void {
+    this.goal = goal;
+    this.quizStep = 1;
   }
-
-  toLinkedinCreator() {
-    const url = 'https://www.linkedin.com/in/guilhermefitl/';
-    window.open(url, '_blank');
+  chooseMoment(moment: string): void {
+    this.moment = moment;
+    this.quizStep = 2;
   }
-
-  toWhatsapp() {
-    const phoneNumber = '5565992985651';
-    const message = encodeURIComponent('Olá, gostaria de saber mais sobre a consultoria personalizada da JC Premium!');
-    const url = `https://wa.me/${phoneNumber}?text=${message}`;
-    window.open(url, '_blank');
+  resetQuiz(): void {
+    this.quizStep = 0;
+    this.goal = '';
+    this.moment = '';
+  }
+  closeMenu(): void {
+    this.mobileMenuOpen = false;
+  }
+  onServiceKeydown(event: KeyboardEvent, index: number): void {
+    let next = index;
+    if (event.key === 'ArrowRight') next = (index + 1) % this.services.length;
+    else if (event.key === 'ArrowLeft')
+      next = (index + this.services.length - 1) % this.services.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = this.services.length - 1;
+    else return;
+    event.preventDefault();
+    this.selectedService = next;
+    document.getElementById('tab-' + next)?.focus();
+  }
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
   }
 }
